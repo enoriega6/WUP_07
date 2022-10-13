@@ -1,7 +1,7 @@
 ---
 title: "covid 19"
-author: "Dr K"
-date: "5/2/2020"
+author: "Eduard Noriega"
+date: "10/12/2022"
 output:
   html_document: default
   pdf_document: default
@@ -24,8 +24,12 @@ state of a patient must be died or alive - we adjust that as well
   
 # Question 1 - Is dying independent of sex
 
+$H_0$: Dying is independent of sex (male or female).
 
-
+$H_A$: Dying is depends on sex (male or female)
+  
+  
+Based on gender, CAT_CAT helper file will be used.
 
 Table of patients:
 ```{r}
@@ -36,24 +40,43 @@ with(kRdata, table(Sex, result))
 
 ```
 
+Based on this table above, the males tend to die more from covid-19. Where out 1411 44 died for males. 1831 females, 25 expired.
+
 ## We create two bar charts - one based on frequency and the other on percent, use ggplot commands to do this
 
-`
+
+```{r}
+barchartGC(~result + Sex,data=kRdata)
+barchartGC(~result + Sex,data=kRdata, type="percent")
+
+```
 
   
-
-
-
+Among those who died of covid-19, more males were seen to die compared to female, as shown on the data plot chart above.
 
 
   
-## Numerical results
+## Numerical results  
 
+```{r}
+table1 <- xtabs(~result + Sex, data=kRdata)
+rowPerc(table1)
+colPerc(table1)
+```
 
-## Inferential results 
+64% of males are shown to have died of covid-19, which is almost twice the amount compared to females.
 
+## Inferential results   
 
+```{r}
+chisq.test(table1)
+chisqtestGC(table1)
+fisher.test(table1)
+```
+
+The p-value result is 0.0012 shown in chi square test, which is less than 0.05. The odds are that males in Korea are 2.3 times more likely to die from covid-19 than females.
 
 
 ## Conclusions
 
+The null hypothesis is rejected, showing there is a difference between gender and dying of covid-19 in Korea. The fisher test shows a p-value of 0.0009, which is less than 0.05. 
